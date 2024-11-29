@@ -42,7 +42,7 @@ const productSchema = mongoose.Schema( {
         type: String,
         required: true,
     },
-    catogary: {
+    category: {
         type: String,
         required: true,
     },

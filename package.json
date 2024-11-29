@@ -1,9 +1,10 @@
 {
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
     "concurrently": "^9.1.0",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
-    "mogodb": "^0.0.1-security",
     "mongoose": "^8.8.3",
     "nodemon": "^3.1.7",
     "react-router-dom": "^7.0.1"
@@ -20,7 +21,9 @@
     "start": "node backend/server.js",
     "server": "nodemon backend/server.js",
     "clients": "npm start --prefix frontend",
-    "dev": "concurrently \"npm run server\" \"npm run clients\""
+    "dev": "concurrently \"npm run server\" \"npm run clients\"",
+    "data:import": "node backend/seeder",
+    "data:destroy": "node backend/seeder -d"
   },
   "author": "William",
   "license": "MIT"
