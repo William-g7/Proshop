@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
 import connectDB from '../database/config/db.js';
+import productRoutes from './routes/productRoutes.js';
 import products from './data/products.js';
 
 const port = process.env.PORT || 5001;
@@ -15,6 +16,9 @@ app.get('/', (req, res) => {
     }
 );
 
+app.use('/api/products', productRoutes);
+
+app.use()
 
 
 app.listen(port, () => {
