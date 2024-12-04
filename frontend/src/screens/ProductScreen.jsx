@@ -1,38 +1,29 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useGetProductDetailsQuery } from "../slices/productsApiSlice";
 import { Row, Col, Image, ListGroup, Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import Rating from "../components/Rating";
 
 
 const ProductScreen = () => {
     const { id: productID } = useParams();
-    const [ product, setProduct ] = useState({});
-    useEffect(() => {
-        try {
-            const fetchProduct = async () => {
-                const { data } = await axios.get(`/api/products/${productID}`);
-                setProduct(data);
-            }
-            fetchProduct();
-        }
-        catch (error) {
-            console.log(error);
-        }
-    }, [productID]);
-
-    console.log(product);
+    const { data: product, isLoading, error } = useGetProductDetailsQuery(productID);
 
     return (
         <>
-            <Link className='btn btn-light my-3' to='/'>
-                Go Back
-            </Link>
+            {isLoading ? (
+                <h2> Loading...</h2>
+            ) : error ? (
+                <div> {error?.data?.message || error.error} </div>
+            ) : (
+                <>
+                    <Link className='btn btn-light my-3' to='/'>
+                        Go Back
+                    </Link>
 
-            <Row>
-                <Col md={5}>
-                    <Image src={product.image} alt={product.name} fluid />
+                    <Row>
+                        <Col md={5}>
+                            <Image src={product.image} alt={product.name} fluid />
                 </Col>
                 <Col md={4}>
                     <ListGroup variant='flush'>
@@ -77,7 +68,9 @@ const ProductScreen = () => {
                         </ListGroup>
                     </Card>
                 </Col>
-            </Row>      
+                    </Row>
+                </>
+            )}
         </>
 
     )

@@ -1,15 +1,18 @@
 import express from 'express';
 import dotenv from 'dotenv';
-dotenv.config();
+import cors from 'cors';
 import connectDB from '../database/config/db.js';
 import productRoutes from './routes/productRoutes.js';
 
+dotenv.config();
 
 const port = process.env.PORT || 5001;
 
 connectDB();
 
 const app = express();
+
+app.use(cors());
 
 // basic route
 app.get('/', (req, res) => {
