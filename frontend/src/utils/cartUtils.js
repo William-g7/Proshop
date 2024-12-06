@@ -3,6 +3,7 @@ export const addDecimals = (num) => {
 }
 
 export const updateCart = (state) => {
+    console.log('Updating cart:', state);
     // Calculate items price
     const itemsPrice = addDecimals(state.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0));
     // Calculate shipping price
