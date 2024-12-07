@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap';
 import { FaTrash } from 'react-icons/fa';
 import Message from '../components/Message';
-import { addToCart } from '../slices/cartSlice';
+import { addToCart, removeFromCart } from '../slices/cartSlice';
 
 const CartScreen = () => {
 
@@ -15,6 +15,10 @@ const CartScreen = () => {
 
     const addToCartHandler = (product, qty) => {
         dispatch(addToCart({ ...product, qty }));
+    };
+
+    const removeFromCartHandler = (id) => {
+        dispatch(removeFromCart(id));
     };
 
     
@@ -47,7 +51,7 @@ const CartScreen = () => {
                                     </Col>
                                     <Col md={2} className="d-flex align-items-center justify-content-center">${item.price}</Col>
                                     <Col md={2} className="d-flex align-items-center justify-content-center">
-                                        <Button type='button' variant='light'>
+                                        <Button type='button' variant='light' onClick={() => removeFromCartHandler(item._id)}>
                                             <FaTrash />
                                         </Button>
                                     </Col>
