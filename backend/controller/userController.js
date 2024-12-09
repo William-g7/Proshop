@@ -12,7 +12,7 @@ const authUser = asyncHandler(async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
-        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
             expiresIn: '30d',
         });
 
@@ -40,7 +40,7 @@ const authUser = asyncHandler(async (req, res) => {
 // @route POST /api/users/register
 // @access Public
 const registerUser = asyncHandler(async (req, res) => {
-    const { name, email, password } = req.body;
+    res.send('Register user');
 });
 
 
@@ -56,14 +56,14 @@ const logoutUser = asyncHandler(async (req, res) => {
 // @route GET /api/users/profile
 // @access Private
 const getUserProfile = asyncHandler(async (req, res) => {
-    const user = await User.findById(req.user._id);
+    res.send('Get user profile');
 });
 
 // @desc Update user profile
 // @route PUT /api/users/profile
 // @access Private
 const updateUserProfile = asyncHandler(async (req, res) => {
-    const user = await User.findById(req.user._id);
+    res.send('Update user profile');
 });
 
 
