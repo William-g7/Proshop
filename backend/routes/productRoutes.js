@@ -9,7 +9,4 @@ router.get('/', getProducts);
 router.get('/:id', getProductById);
 
 
-router.use(notFound);
-router.use(errorHandler);
-
 export default router;
