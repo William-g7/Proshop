@@ -10,6 +10,7 @@ import HomeScreen from './screens/HomeScreen'
 import ProductScreen from './screens/ProductScreen';
 import CartScreen from './screens/CartScreen';
 import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
 import reportWebVitals from './reportWebVitals';
 
 
@@ -20,6 +21,7 @@ const router = createBrowserRouter(
       <Route path='product/:id' element={<ProductScreen />} />
       <Route path='cart' element={<CartScreen />} />
       <Route path='/login' element={<LoginScreen />} />
+      <Route path='/register' element={<RegisterScreen />} />
     </Route>
   )
 )
