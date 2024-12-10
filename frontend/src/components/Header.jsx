@@ -1,16 +1,29 @@
 import React from 'react'
 import { Navbar, Nav, Container, Badge } from 'react-bootstrap'
 import { FaShoppingCart, FaUser } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 import { NavDropdown } from 'react-bootstrap'
+import { useLogoutMutation } from '../slices/userApiSclice'
+import { logout } from '../slices/authSlice'
 import logo from '../assets/logo.png'
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
   const { userInfo } = useSelector((state) => state.auth);
+
+  const [logoutApiCall] = useLogoutMutation();
   
+  const logoutHandler = async () => {
+    await logoutApiCall().unwrap();
+    dispatch(logout());
+    navigate('/login');
+  }
+
   return (
     <header>
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
@@ -38,7 +51,7 @@ const Header = () => {
                   <NavDropdown.Item as={Link} to='/orderhistory'>
                     Order
                   </NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to='/logout'>
+                  <NavDropdown.Item onClick={logoutHandler}>
                     Logout
                   </NavDropdown.Item>
                 </NavDropdown>
