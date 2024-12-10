@@ -7,16 +7,45 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import FormContainer from '../components/FormContainer';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import Loader from '../components/Loader.jsx';
+
+
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const submitHandler = (e) => {
+    const [login, {isLoading}] = useLoginMutation();
+
+    const { userInfo } = useSelector((state) => state.auth);
+
+    const { search } = useLocation();
+    const sp = new URLSearchParams(search);
+    const redirect = sp.get('redirect') || '/';
+
+    useEffect(() => {
+        if (userInfo) {
+            navigate(redirect);
+        }
+    }, [navigate, userInfo, redirect]);
+
+    const submitHandler = async (e) => {
         e.preventDefault();
-        console.log(email, password);
+        try {
+            const res = await login({ email, password }).unwrap();
+            console.log(res);
+            dispatch(setCredentials({ ...res }));
+            console.log(userInfo);
+            navigate(redirect);
+        } catch (err) {
+            console.error('Login error:', err);
+            toast.error(err?.data?.message || err.error);
+        }
     }
 
     return (
@@ -46,12 +75,14 @@ const LoginScreen = () => {
                     ></Form.Control>
                 </Form.Group>
 
-                <Button type='submit' variant='primary'>Sign In</Button>
+                <Button type='submit' variant='primary' disabled={isLoading}>
+                    {isLoading ? <Loader /> : 'Sign In'}   
+                </Button>
             </Form>
 
             <Row className='py-3'>
                 <Col>
-                    New Customer? <Link to='/register'>Register</Link>
+                    New Customer? <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>Register</Link>
                 </Col>
             </Row>
         </FormContainer>

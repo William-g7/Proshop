@@ -8,10 +8,13 @@ import { Link } from "react-router-dom";
 import Rating from "../components/Rating";
 import Loader from "../components/Loader";
 import Message from "../components/Message";   
+import { useSelector } from "react-redux";
+
 
 const ProductScreen = () => {
     const { id: productID } = useParams();
     const { data:product, isLoading, error } = useGetProductDetailsQuery(productID);
+    const { userInfo } = useSelector((state) => state.auth);
     
     const navigate = useNavigate();
     const [qty, setQty] = useState(1);
