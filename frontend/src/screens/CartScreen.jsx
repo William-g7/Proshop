@@ -71,7 +71,7 @@ const CartScreen = () => {
                             </Card.Text>
                         </ListGroup.Item>
                         <ListGroup.Item>
-                            <Button type='button' className='btn-block' disabled={cartItems.length === 0} >
+                            <Button type='button' className='btn-block' disabled={cartItems.length === 0} onClick={() => navigate('/shipping')}>
                                 Proceed To Checkout
                             </Button>
                         </ListGroup.Item>
