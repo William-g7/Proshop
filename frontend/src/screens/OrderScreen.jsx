@@ -5,7 +5,7 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { Row, Col, ListGroup, ListGroupItem, Card, Button } from 'react-bootstrap';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
-import { useGetPaypalClientIdQuery, usePayOrderMutation } from '../slices/orderApiSlice';
+import { useGetPaypalClientIdQuery, usePayOrderMutation, useUpdateOrderToDeliveredMutation } from '../slices/orderApiSlice';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -17,9 +17,10 @@ const OrderScreen = () => {
     const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
 
     const { data: paypal, isLoading: loadingPaypal, error: errorPaypal } = useGetPaypalClientIdQuery();
-    console.log(paypal);
 
     const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
+
+    const [updateOrderToDelivered, { isLoading: loadingUpdate }] = useUpdateOrderToDeliveredMutation();
 
     const { userInfo } = useSelector((state) => state.auth);
     useEffect(() => {
@@ -74,6 +75,15 @@ const OrderScreen = () => {
 
     const onError = (err) => {
         toast.error(err.message);
+    };
+
+    const handleMarkAsDelivered = async () => {
+        try {
+            await updateOrderToDelivered(order._id);
+            refetch();
+        } catch (err) {
+            toast.error(err.message);
+        }
     };
 
 
@@ -165,12 +175,14 @@ const OrderScreen = () => {
                                             )}
                                         </ListGroupItem>
                                     )}
-                                    {order.isDelivered && (
-                                        <ListGroupItem>
-                                            <Button type='button' className='btn-block'>
-                                                Deliver
-                                            </Button>
-                                        </ListGroupItem>
+                                    {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                                        <ListGroup variant='flush'>
+                                            <ListGroupItem className='d-grid gap-2 mt-3'>
+                                                <Button disabled={loadingUpdate} type='button' className='btn-block' onClick={handleMarkAsDelivered}>
+                                                    {loadingUpdate ? <Loader /> : 'Mark as Delivered'}
+                                                </Button>
+                                            </ListGroupItem>
+                                        </ListGroup>
                                     )}
                                 </ListGroupItem>
                             </ListGroup>

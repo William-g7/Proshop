@@ -25,6 +25,8 @@ const OrderListScreen = () => {
     }, [userInfo, navigate]);
 
     const filteredOrders = orders?.filter(order => {
+        if (!order.user) return false;
+
         const matchesSearch = order._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
             order.user.name.toLowerCase().includes(searchTerm.toLowerCase());
 
@@ -37,7 +39,7 @@ const OrderListScreen = () => {
                 filterDelivery === 'undelivered' ? !order.isDelivered : true;
 
         return matchesSearch && matchesPayment && matchesDelivery;
-    });
+    }) || [];
 
     const sortedOrders = [...filteredOrders].sort((a, b) => {
         switch (sortBy) {

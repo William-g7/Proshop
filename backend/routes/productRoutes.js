@@ -1,6 +1,5 @@
 import express from 'express';
-import { getProducts, getProductById } from '../controller/routesController.js';
-import { notFound, errorHandler } from '../middleware/errorHandler.js';
+import { getProducts, getProductById } from '../controller/productController.js';
 
 const router = express.Router();
 
