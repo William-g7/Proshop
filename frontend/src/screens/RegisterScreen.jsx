@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useRegisterMutation } from '../slices/userApiSclice';
+import { useRegisterMutation } from '../slices/userApiSlice.js';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../slices/authSlice';
 import { useNavigate } from 'react-router-dom';
@@ -21,7 +21,7 @@ const RegisterScreen = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const [register, {isLoading}] = useRegisterMutation();
+    const [register, { isLoading }] = useRegisterMutation();
 
     const { userInfo } = useSelector((state) => state.auth);
 
@@ -89,7 +89,7 @@ const RegisterScreen = () => {
                 </Form.Group>
 
                 <Button type='submit' variant='primary' disabled={isLoading}>
-                    {isLoading ? <Loader /> : 'Sign Up'}   
+                    {isLoading ? <Loader /> : 'Sign Up'}
                 </Button>
             </Form>
 

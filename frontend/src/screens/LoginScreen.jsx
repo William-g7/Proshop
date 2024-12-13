@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLoginMutation } from '../slices/userApiSclice';
+import { useLoginMutation } from '../slices/userApiSlice.js';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../slices/authSlice';
 import { useNavigate } from 'react-router-dom';
@@ -20,7 +20,7 @@ const LoginScreen = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const [login, {isLoading}] = useLoginMutation();
+    const [login, { isLoading }] = useLoginMutation();
 
     const { userInfo } = useSelector((state) => state.auth);
 
@@ -76,7 +76,7 @@ const LoginScreen = () => {
                 </Form.Group>
 
                 <Button type='submit' variant='primary' disabled={isLoading}>
-                    {isLoading ? <Loader /> : 'Sign In'}   
+                    {isLoading ? <Loader /> : 'Sign In'}
                 </Button>
             </Form>
 
