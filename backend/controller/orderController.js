@@ -7,14 +7,14 @@ import Order from '../../database/models/orderModel.js';
 // @route POST /api/orders
 // @access Private
 const addOrderItems = asyncHandler(async (req, res) => {
-    const { 
-        orderItems, 
-        shippingAddress, 
-        paymentMethod, 
-        itemsPrice, 
-        taxPrice, 
-        shippingPrice, 
-        totalPrice 
+    const {
+        orderItems,
+        shippingAddress,
+        paymentMethod,
+        itemsPrice,
+        taxPrice,
+        shippingPrice,
+        totalPrice
     } = req.body;
     if (orderItems && orderItems.length === 0) {
         res.status(400);
@@ -95,7 +95,8 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
 // @route GET /api/orders
 // @access Private/Admin
 const getOrders = asyncHandler(async (req, res) => {
-    res.send('getOrders');
+    const orders = await Order.find({}).populate('user', 'id name');
+    res.status(200).json(orders);
 });
 
 
