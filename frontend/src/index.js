@@ -23,6 +23,8 @@ import OrderHistoryScreen from './screens/OrderHistoryScreen';
 import ProductListScreen from './screens/Admin/ProductListScreen';
 import OrderListScreen from './screens/Admin/OrderListScreen';
 import UserListScreen from './screens/Admin/UserListScreen';
+import CreateProductScreen from './screens/Admin/CreateProductScreen';
+import EditProductScreen from './screens/Admin/EditProductScreen';
 import reportWebVitals from './reportWebVitals';
 
 
@@ -46,6 +48,8 @@ const router = createBrowserRouter(
         <Route path='/admin/productlist' element={<ProductListScreen />} />
         <Route path='/admin/orderlist' element={<OrderListScreen />} />
         <Route path='/admin/userlist' element={<UserListScreen />} />
+        <Route path='/admin/product/create' element={<CreateProductScreen />} />
+        <Route path='/admin/product/:id/edit' element={<EditProductScreen />} />
       </Route>
     </Route>
   )
