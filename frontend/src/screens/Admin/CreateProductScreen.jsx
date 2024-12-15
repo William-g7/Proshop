@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import FormContainer from '../../components/FormContainer';
-import { useCreateProductMutation } from '../../slices/productsApiSlice';
+import { useCreateProductMutation, useUploadProductImageMutation } from '../../slices/productsApiSlice';
 
 const CreateProductScreen = () => {
     const navigate = useNavigate();
     const [createProduct, { isLoading: loadingCreate }] = useCreateProductMutation();
+    const [uploadProductImage, { isLoading: loadingUpload }] = useUploadProductImageMutation();
 
     const [name, setName] = useState('');
     const [price, setPrice] = useState(0);
@@ -20,10 +20,31 @@ const CreateProductScreen = () => {
     const [countInStock, setCountInStock] = useState(0);
     const [description, setDescription] = useState('');
 
+    const handleImageUpload = async (e) => {
+        const formData = new FormData();
+        formData.append('image', e.target.files[0]);
+        try {
+            const res = await uploadProductImage(formData).unwrap();
+            toast.success(res.message);
+            setImage(res.image);
+        } catch (err) {
+            toast.error(err?.data?.message || err.error);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log('Submitting product:', {
+            name,
+            price,
+            image,
+            brand,
+            category,
+            countInStock,
+            description,
+        });
         try {
-            await createProduct({
+            const result = await createProduct({
                 name,
                 price,
                 image,
@@ -32,9 +53,11 @@ const CreateProductScreen = () => {
                 countInStock,
                 description,
             }).unwrap();
+            console.log('Create product response:', result)
             toast.success('Product created successfully');
             navigate('/admin/productlist');
         } catch (err) {
+            console.error('Error creating product:', err);
             toast.error(err?.data?.message || err.error);
         }
     };
@@ -43,7 +66,7 @@ const CreateProductScreen = () => {
         <FormContainer>
             <h1>Create Product</h1>
             {loadingCreate && <Loader />}
-
+            {loadingUpload && <Loader />}
             <Form onSubmit={handleSubmit}>
                 <Form.Group controlId='name' className='my-2'>
                     <Form.Label>Name</Form.Label>
@@ -74,6 +97,11 @@ const CreateProductScreen = () => {
                         placeholder='Enter image url'
                         value={image}
                         onChange={(e) => setImage(e.target.value)}
+                    ></Form.Control>
+                    <Form.Control
+                        type='file'
+                        label='Choose Image'
+                        onChange={handleImageUpload}
                     ></Form.Control>
                 </Form.Group>
 
