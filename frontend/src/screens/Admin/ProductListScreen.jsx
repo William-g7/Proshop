@@ -4,7 +4,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button, Row, Col, Form, InputGroup } from 'react-bootstrap';
 import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
-import { useGetProductsQuery } from '../../slices/productsApiSlice';
+import { useGetProductsQuery, useDeleteProductMutation } from '../../slices/productsApiSlice';
+import { toast } from 'react-toastify';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 
@@ -14,7 +15,7 @@ const ProductListScreen = () => {
     const { userInfo } = useSelector((state) => state.auth);
     const { data: products, refetch, isLoading, error } = useGetProductsQuery();
     const navigate = useNavigate();
-
+    const [deleteProduct] = useDeleteProductMutation();
     useEffect(() => {
         if (!userInfo) {
             navigate('/login');
@@ -46,6 +47,18 @@ const ProductListScreen = () => {
     const getUniqueValues = (products, key) => {
         if (!products) return [];
         return ['all', ...new Set(products.map(product => product[key]))];
+    };
+
+    const deleteHandler = async (id) => {
+        try {
+            if (window.confirm('Are you sure you want to delete this product?')) {
+                await deleteProduct(id);
+                refetch();
+                toast.success('Product deleted successfully');
+            }
+        } catch (error) {
+            toast.error('Error deleting product');
+        }
     };
 
     return (
@@ -118,11 +131,9 @@ const ProductListScreen = () => {
                                             <FaEdit />
                                         </Button>
                                     </LinkContainer>
-                                    <LinkContainer to={`/admin/product/${product._id}/delete`}>
-                                        <Button variant='light' className='btn-sm mx-2'>
-                                            <FaTrash />
-                                        </Button>
-                                    </LinkContainer>
+                                    <Button variant='light' className='btn-sm mx-2' onClick={() => deleteHandler(product._id)}>
+                                        <FaTrash />
+                                    </Button>
                                 </td>
                             </tr>
                         ))}
