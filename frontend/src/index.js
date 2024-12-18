@@ -25,6 +25,7 @@ import OrderListScreen from './screens/Admin/OrderListScreen';
 import UserListScreen from './screens/Admin/UserListScreen';
 import CreateProductScreen from './screens/Admin/CreateProductScreen';
 import EditProductScreen from './screens/Admin/EditProductScreen';
+import EditUserScreen from './screens/Admin/EditUserScreen';
 import reportWebVitals from './reportWebVitals';
 
 
@@ -50,6 +51,7 @@ const router = createBrowserRouter(
         <Route path='/admin/userlist' element={<UserListScreen />} />
         <Route path='/admin/product/create' element={<CreateProductScreen />} />
         <Route path='/admin/product/:id/edit' element={<EditProductScreen />} />
+        <Route path='/admin/user/:id/edit' element={<EditUserScreen />} />
       </Route>
     </Route>
   )

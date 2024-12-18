@@ -7,12 +7,12 @@ import User from '../../database/models/userModel.js';
 // @route POST /api/users/login
 // @access Public
 const authUser = asyncHandler(async (req, res) => {
-    
+
     const { email, password } = req.body;
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
-        generateToken(res,user._id);
+        generateToken(res, user._id);
 
         res.json({
             _id: user._id,
@@ -121,7 +121,12 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // @route GET /api/users
 // @access Private/Admin
 const getUsers = asyncHandler(async (req, res) => {
-    const users = await User.find({});
+    const user = await User.find({});
+    res.status(200).json(user);
+    if (!user) {
+        res.status(404);
+        throw new Error('User not found');
+    }
 });
 
 // @desc Get user by ID
@@ -129,6 +134,12 @@ const getUsers = asyncHandler(async (req, res) => {
 // @access Private/Admin
 const getUserById = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id);
+    if (user) {
+        res.status(200).json(user);
+    } else {
+        res.status(404);
+        throw new Error('User not found');
+    }
 });
 
 
@@ -138,6 +149,13 @@ const getUserById = asyncHandler(async (req, res) => {
 // @access Private/Admin
 const deleteUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id);
+    if (user) {
+        await user.deleteOne({ _id: req.params.id });
+        res.status(200).json({ message: 'User deleted successfully' });
+    } else {
+        res.status(404);
+        throw new Error('User not found');
+    }
 });
 
 
@@ -146,6 +164,16 @@ const deleteUser = asyncHandler(async (req, res) => {
 // @access Private/Admin
 const updateUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id);
+    if (user) {
+        user.name = req.body.name || user.name;
+        user.email = req.body.email || user.email;
+        user.isAdmin = req.body.isAdmin || user.isAdmin;
+        const updatedUser = await user.save();
+        res.status(200).json(updatedUser);
+    } else {
+        res.status(404);
+        throw new Error('User not found');
+    }
 });
 
 
@@ -154,4 +182,4 @@ const updateUser = asyncHandler(async (req, res) => {
 
 
 
-export { authUser, registerUser, logoutUser, getUserProfile, updateUserProfile, getUsers, getUserById, deleteUser, updateUser};
+export { authUser, registerUser, logoutUser, getUserProfile, updateUserProfile, getUsers, getUserById, deleteUser, updateUser };
