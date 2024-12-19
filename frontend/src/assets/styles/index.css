@@ -17,10 +17,14 @@ main {
 }
 
 .product-title {
-  height: 2.5em; /* Set a fixed height */
-  overflow: hidden; /* Hide overflow content */
-  text-overflow: ellipsis; /* Add ellipsis for long text */
-  white-space: nowrap; /* Prevent wrapping */
+  height: 2.5em;
+  /* Set a fixed height */
+  overflow: hidden;
+  /* Hide overflow content */
+  text-overflow: ellipsis;
+  /* Add ellipsis for long text */
+  white-space: nowrap;
+  /* Prevent wrapping */
 }
 
 table td,
@@ -50,4 +54,28 @@ table th {
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
+}
+
+.search-input-group {
+  transition: all 0.3s ease;
+}
+
+.search-input-group:hover {
+  transform: scale(1.02);
+}
+
+.search-input-group input:focus {
+  box-shadow: none;
+  border-color: #666;
+}
+
+.search-input-group .input-group-text:hover {
+  color: #666;
+}
+
+@media (max-width: 992px) {
+  .search-input-group {
+    margin: 10px 0;
+    width: 100% !important;
+  }
 }

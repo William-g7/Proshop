@@ -1,7 +1,7 @@
-import React from 'react'
-import { Navbar, Nav, Container, Badge } from 'react-bootstrap'
-import { FaShoppingCart, FaUser } from 'react-icons/fa'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Navbar, Nav, Container, Badge, Button, Form, InputGroup } from 'react-bootstrap'
+import { FaShoppingCart, FaUser, FaSearch } from 'react-icons/fa'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { NavDropdown } from 'react-bootstrap'
 import { useLogoutMutation } from '../slices/userApiSlice'
@@ -11,6 +11,16 @@ import logo from '../assets/logo.png'
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [keyword, setKeyword] = useState('');
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (keyword.trim()) {
+      navigate(`/search/${keyword.trim()}/page/1`);
+    } else {
+      navigate('/');
+    }
+  }
 
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
@@ -33,7 +43,32 @@ const Header = () => {
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto">
+            </Nav>
+
             <Nav className="ms-auto" >
+              <InputGroup className="search-input-group me-3" style={{ width: '300px' }}>
+                <Form.Control
+                  type='text'
+                  name='q'
+                  onChange={(e) => setKeyword(e.target.value)}
+                  placeholder='Search Products...'
+                  className='border border-secondary'
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      submitHandler(e);
+                    }
+                  }}
+                />
+                <InputGroup.Text
+                  className='bg-white border border-secondary border-start-0'
+                  style={{ cursor: 'pointer' }}
+                  onClick={submitHandler}
+                >
+                  <FaSearch />
+                </InputGroup.Text>
+              </InputGroup>
+
               <Nav.Link as={Link} to='/cart'>
                 <FaShoppingCart /> Cart
                 {cartItems.length > 0 && (
