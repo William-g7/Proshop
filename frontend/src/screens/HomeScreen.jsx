@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useGetProductsQuery } from '../slices/productsApiSlice'
 import { Row, Col, Pagination } from 'react-bootstrap'
 import Product from '../components/Product'
+import ProductCarousel from '../components/ProductCarousel'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 
@@ -23,6 +24,7 @@ const HomeScreen = () => {
         <Message variant='danger'>{error?.data?.message || error.error}</Message>
       ) : (
         <>
+          <ProductCarousel />
           <h1>Latest Products</h1>
           <Row>
             {data.products.map(product => (
