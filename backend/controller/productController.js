@@ -1,7 +1,7 @@
 import asyncHandler from '../middleware/asyncHandler.js';
 import Product from '../../database/models/productModel.js';
 
-// @desc Fetch all products
+// @desc Fetch all products in pagination
 // @route GET /api/products
 // @access Public
 const getProducts = asyncHandler(async (req, res) => {
@@ -16,6 +16,20 @@ const getProducts = asyncHandler(async (req, res) => {
     const count = await Product.countDocuments({ ...keyword });
     const products = await Product.find({ ...keyword }).limit(pageSize).skip(pageSize * (page - 1));
     res.json({ products, page, pages: Math.ceil(count / pageSize) });
+});
+
+
+// @desc Fetch all products for admin
+// @route GET /api/products/admin
+// @access Private/Admin
+const getProductsAdmin = asyncHandler(async (req, res) => {
+    try {
+        const products = await Product.find({});
+        res.status(200).json(products);
+    } catch (error) {
+        res.status(500);
+        throw new Error('Server error');
+    }
 });
 
 // @desc Fetch top rated products
@@ -124,4 +138,4 @@ const createProductReview = asyncHandler(async (req, res) => {
     }
 });
 
-export { getProducts, getTopRatedProducts, getProductById, createProduct, updateProduct, deleteProduct, createProductReview };
+export { getProducts, getProductsAdmin, getTopRatedProducts, getProductById, createProduct, updateProduct, deleteProduct, createProductReview };

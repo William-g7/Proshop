@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button, Row, Col, Form, InputGroup } from 'react-bootstrap';
 import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
-import { useGetProductsQuery, useDeleteProductMutation } from '../../slices/productsApiSlice';
+import { useGetProductsAdminQuery, useDeleteProductMutation } from '../../slices/productsApiSlice';
 import { toast } from 'react-toastify';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
@@ -13,7 +13,7 @@ import Loader from '../../components/Loader';
 const ProductListScreen = () => {
 
     const { userInfo } = useSelector((state) => state.auth);
-    const { data: products, refetch, isLoading, error } = useGetProductsQuery();
+    const { data: products, refetch, isLoading, error } = useGetProductsAdminQuery();
     const navigate = useNavigate();
     const [deleteProduct] = useDeleteProductMutation();
     useEffect(() => {
@@ -103,7 +103,11 @@ const ProductListScreen = () => {
                     </Button>
                 </LinkContainer>
             </Col>
-            {isLoading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
+            {isLoading ? <Loader /> : error ? (
+                <Message variant='danger'>
+                    {error?.data?.message || error?.error || 'An error occurred'}
+                </Message>
+            ) : (
                 <Table striped bordered hover responsive className='table-sm' style={{ marginTop: '30px' }}>
                     <thead>
                         <tr>
