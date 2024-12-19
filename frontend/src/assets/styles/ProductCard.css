@@ -1,0 +1,36 @@
+.product-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card .card-img-top {
+    height: 200px;
+    /* 固定图片高度 */
+    object-fit: cover;
+    /* 保持图片比例并填充容器 */
+}
+
+.product-card .card-body {
+    flex: 1;
+    /* 让卡片体占据剩余空间 */
+    display: flex;
+    flex-direction: column;
+}
+
+.product-title {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    /* 文本超出显示省略号 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /* 限制文本行数 */
+    -webkit-box-orient: vertical;
+}
+
+.product-price {
+    margin-top: auto;
+    /* 价格固定在底部 */
+}

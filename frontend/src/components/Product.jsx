@@ -1,30 +1,28 @@
 import { Card } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Rating from './Rating'
+import '../assets/styles/ProductCard.css'
 
-
-const Product = ({product}) => {
+const Product = ({ product }) => {
     return (
-        <Card className='my-3 p-3 rounded'>
+        <Card className='my-3 p-3 rounded product-card'>
             <Link to={`/product/${product._id}`}>
                 <Card.Img src={product.image} variant='top' />
             </Link>
-        <Card.Body>
-            <Link to={`/product/${product._id}`}>
-                <Card.Title as='div' className = 'product-title'>
-                    <strong>{product.name}</strong>
-                </Card.Title>
-            </Link>
-            <Card.Text as='div'>
-                <Rating value = {product.rating} text={`${product.numReviews} reviews`} />
-            </Card.Text>
+            <Card.Body>
+                <Link to={`/product/${product._id}`}>
+                    <Card.Title as='div' className='product-title'>
+                        <strong>{product.name}</strong>
+                    </Card.Title>
+                </Link>
+                <Card.Text as='div'>
+                    <Rating value={product.rating} text={`${product.numReviews} reviews`} />
+                </Card.Text>
 
-            <Card.Text as='h3'>
-                <div className='my-3'>
+                <Card.Text as='h3' className='product-price'>
                     ${product.price}
-                </div>
-            </Card.Text>
-        </Card.Body>
+                </Card.Text>
+            </Card.Body>
 
         </Card>
     )

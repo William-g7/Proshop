@@ -4,6 +4,14 @@ import { logout } from './authSlice';
 
 const baseQuery = fetchBaseQuery({
     baseUrl: BASE_URL,
+    credentials: 'include',
+    prepareHeaders: (headers, { getState }) => {
+        const token = getState().auth?.userInfo?.token;
+        if (token) {
+            headers.set('authorization', `Bearer ${token}`);
+        }
+        return headers;
+    },
 });
 
 const baseQueryWithReauth = async (args, api, extra) => {

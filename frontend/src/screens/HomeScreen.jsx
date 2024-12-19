@@ -35,7 +35,7 @@ const HomeScreen = () => {
           </Row>
           {/* Pagination */}
           {data.pages > 1 && (
-            <Pagination className='justify-content-center my-3'>
+            <Pagination className='pagination-container'>
               {[...Array(data.pages).keys()].map((x) => (
                 <Pagination.Item
                   key={x + 1}

@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import FormContainer from '../../components/FormContainer';
-import { useGetProductDetailsQuery, useUpdateProductMutation } from '../../slices/productsApiSlice';
+import { useGetProductDetailsQuery, useUpdateProductMutation, useUploadProductImageMutation } from '../../slices/productsApiSlice';
 
 const EditProductScreen = () => {
     const { id: productId } = useParams();
@@ -13,6 +13,7 @@ const EditProductScreen = () => {
 
     const { data: product, isLoading, error: fetchError } = useGetProductDetailsQuery(productId);
     const [updateProduct, { isLoading: loadingUpdate }] = useUpdateProductMutation();
+    const [uploadProductImage, { isLoading: loadingUpload }] = useUploadProductImageMutation();
 
     const [name, setName] = useState('');
     const [price, setPrice] = useState(0);
@@ -54,10 +55,23 @@ const EditProductScreen = () => {
         }
     };
 
+    const handleImageUpload = async (e) => {
+        const formData = new FormData();
+        formData.append('image', e.target.files[0]);
+        try {
+            const res = await uploadProductImage(formData).unwrap();
+            toast.success(res.message);
+            setImage(res.image);
+        } catch (err) {
+            toast.error(err?.data?.message || err.error);
+        }
+    };
+
     return (
         <FormContainer>
             <h1>Update Product</h1>
             {loadingUpdate && <Loader />}
+            {loadingUpload && <Loader />}
             {isLoading ? (
                 <Loader />
             ) : fetchError ? (
@@ -93,6 +107,11 @@ const EditProductScreen = () => {
                             placeholder='Enter image url'
                             value={image}
                             onChange={(e) => setImage(e.target.value)}
+                        ></Form.Control>
+                        <Form.Control
+                            type='file'
+                            label='Choose Image'
+                            onChange={handleImageUpload}
                         ></Form.Control>
                     </Form.Group>
 

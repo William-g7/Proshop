@@ -217,3 +217,46 @@ table th {
     font-size: 1rem;
   }
 }
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 3rem auto;
+  width: 100%;
+}
+
+.pagination {
+  display: inline-flex;
+  background-color: #fff;
+  padding: 0.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pagination .page-item .page-link {
+  margin: 0 0.2rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  border: none;
+  color: #495057;
+  transition: all 0.2s ease;
+}
+
+.pagination .page-item .page-link:hover {
+  background-color: #f8f9fa;
+  color: #2c3e50;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #3c4c5d;
+  /* 使用主题色 */
+  border-color: #3c4c5d;
+  color: white;
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #6c757d;
+  pointer-events: none;
+  background-color: transparent;
+}
