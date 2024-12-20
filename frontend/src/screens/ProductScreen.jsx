@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import Rating from "../components/Rating";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-
+import Meta from "../components/Meta";
 
 
 const ProductScreen = () => {
@@ -53,6 +53,7 @@ const ProductScreen = () => {
                 <Message variant='danger'>{error?.data?.message || error.error}</Message>
             ) : (
                 <>
+                    <Meta title={product.name} description={product.description} />
                     <Link className='btn btn-light my-3' to='/'>
                         Go Back
                     </Link>

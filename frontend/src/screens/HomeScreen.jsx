@@ -4,6 +4,7 @@ import { useGetProductsQuery } from '../slices/productsApiSlice'
 import { Row, Col, Pagination } from 'react-bootstrap'
 import Product from '../components/Product'
 import ProductCarousel from '../components/ProductCarousel'
+import Meta from '../components/Meta'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 
@@ -18,6 +19,7 @@ const HomeScreen = () => {
 
   return (
     <>
+      <Meta title='Welcome To ProShop' />
       {isLoading ? (
         <Loader />
       ) : error ? (
