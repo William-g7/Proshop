@@ -32,7 +32,7 @@
     "dev": "concurrently \"npm run server\" \"npm run clients\"",
     "data:import": "node database/seeder",
     "data:destroy": "node database/seeder -d",
-    "build": "npm install && npm run build --prefix frontend && npm run start --prefix frontend"
+    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
   },
   "author": "William",
   "license": "MIT"
